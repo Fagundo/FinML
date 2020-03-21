@@ -1,3 +1,9 @@
+
+# Python files
 __pycache__
 
+# Dont commit db
 database/*
+
+# MacOS
+*.DS_Store

@@ -5,8 +5,11 @@ RUN apt-get update && \
     sudo \
     wget \
     curl \
+    libpq-dev \
     python3-pip
 
-COPY ./finml /finml
+COPY ./FinML /FinML
 COPY ./requirements.txt /requirements.txt
 RUN pip3 install -r requirements.txt
+
+WORKDIR /FinML
