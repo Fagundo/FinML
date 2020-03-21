@@ -1,0 +1,4 @@
+celery==4.4.2
+numpy==1.18.2
+scikit-learn==0.22.2
+rabbitmq==0.2.0
