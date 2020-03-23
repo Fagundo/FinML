@@ -49,7 +49,6 @@ OTHER_APPS = [
 LOCAL_APPS = [
     'apps.trade',
     'apps.model',
-    'apps.tests',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + OTHER_APPS + LOCAL_APPS

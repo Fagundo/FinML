@@ -20,16 +20,14 @@ def test(self):
 
 @periodic_task(run_every=crontab(minute='*'))
 def get_equities():
-    equities = Equity.objects.all()
+    equities = Equity.objects.filter(query=True)
     for equity in equities:
-        # QUERY HERE
+        # TODO: MJF QUERY DATA
         logger.debug(f'NAME: {str(equity.name)}')
         logger.debug(f'TICKER: {str(equity.ticker)}\n')
 
-# @celery_app.task(ignore_result=True)
 @periodic_task(run_every=crontab(minute='*'))
 def stock_query():
-    equity_1=None
 
     try:
         equity_1, exists = Equity.objects.get_or_create(
@@ -46,11 +44,14 @@ def stock_query():
         logger.debug(str(e))
 
     try:
+        p = random.uniform(1, 15)
         equity_price = Price.objects.create(
             date=dt.now(tz=timezone.utc),
             asset=equity_1,
-            price=random.random(),
-            volume=1
+            price=p,
+            bid=p-random.random(),
+            ask=p+random.random(),
+            volume=round(random.uniform(1000, 5000))
         )
         equity_price.save()
 
