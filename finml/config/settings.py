@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from celery.schedules import crontab
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,6 +27,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = True
 
 ALLOWED_HOSTS = '*'
+DOMAIN = os.environ['DOMAIN']
 
 
 # Application definition
@@ -40,6 +43,7 @@ DJANGO_APPS = [
 
 OTHER_APPS = [
     'rest_framework',
+    'django_celery_beat',
 ]
 
 LOCAL_APPS = [
@@ -114,6 +118,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# REST FRAMEWORK
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -139,5 +149,4 @@ CELERY_BROKER_URL = 'redis://redis'
 CELERY_BROKER_URL= 'redis://redis'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
-
 CELERY_BEAT_SCHEDULE = {}
