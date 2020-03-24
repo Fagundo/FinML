@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Equity(models.Model):
+class EquityIndex(models.Model):
     '''Django model of equity assets. Includes generic information about the asset.
        Primarily used as an index for equities to query'''
     name = models.CharField(max_length=20, help_text='Equity Name')
@@ -17,10 +17,18 @@ class Equity(models.Model):
     own = models.BooleanField(default=False)
 
 
-class Price(models.Model):
+class Equity(models.Model):
     date = models.DateTimeField()
-    asset = models.ForeignKey(Equity, on_delete=models.CASCADE)
+    asset = models.ForeignKey(EquityIndex, on_delete=models.CASCADE)
     price = models.FloatField(null=True, blank=True)
     bid = models.FloatField(null=True, blank=True)
     ask = models.FloatField(null=True, blank=True)
     volume = models.IntegerField()
+    marketcap = models.IntegerField()
+
+# TODO MJF: Make a model for brokerage accounts
+# class Broker(models.Model):
+#     brokerage = models.CharField(max_length=20, help_text='Equity Name')
+#     asset = models.CharField(max_length=20, help_text='Equity Name')
+#     username = models.CharField(max_length=20, help_text='Equity Name')
+#     token = models.CharField(max_length=20, help_text='Equity Name')

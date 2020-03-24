@@ -5,4 +5,5 @@ django_celery_beat==2.0.0
 numpy==1.18.2
 psycopg2==2.8.4
 redis==3.2.0
+requests==2.23.0
 scikit-learn==0.22.2
