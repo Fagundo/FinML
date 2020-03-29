@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
   finml:
+    image: finml
     build: .
     volumes:
       - ./FinML:/FinML
@@ -13,7 +14,7 @@ services:
     command: sh ./scripts/run.sh
 
   celery:
-    build: .
+    image: finml
     volumes:
       - ./FinML:/FinML
     depends_on:
@@ -23,7 +24,7 @@ services:
     command: python3 -m config.celery worker --loglevel debug
 
   celery_beat:
-    build: .
+    image: finml
     volumes:
       - ./FinML:/FinML
     depends_on:
