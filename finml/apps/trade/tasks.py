@@ -29,10 +29,6 @@ def realtime(stock_list):
     except Exception as e:
         print(str(e))
 
-@celery_app.task(ignore_result=True)
-def test(self):
-    print('Hello World')
-
 @periodic_task(run_every=crontab(minute='*'))
 def get_equities():
     equities = EquityIndex.objects.filter(query=True)
@@ -40,45 +36,14 @@ def get_equities():
 
     if len(equities) > 0:
         json_response = realtime(equities)
-        logger.debug(str(json_response))
-    # for equity in equities:
-    #     # TODO: MJF QUERY DATA
-    #     logger.debug(f'NAME: {str(equity.name)}')
-    #     logger.debug(f'TICKER: {str(equity.ticker)}\n')
-#
-# @periodic_task(run_every=crontab(minute='*'))
-# def stock_query():
-#
-#
-#     try:
-#         equity_1, exists = Equity.objects.get_or_create(
-#             name='Josh Luxton',
-#             ticker='JL',
-#             industry='datascience',
-#             industry_2='dad',
-#         )
-#         logger.debug('SUCCESSS')
-#         logger.debug(str(model_to_dict(equity_1)))
-#
-#     except Exception as e:
-#         logger.debug('FAILURE')
-#         logger.debug(str(e))
-#
-#     try:
-#         p = random.uniform(1, 15)
-#         equity_price = Price.objects.create(
-#             date=dt.now(tz=timezone.utc),
-#             asset=equity_1,
-#             price=p,
-#             bid=p-random.random(),
-#             ask=p+random.random(),
-#             volume=round(random.uniform(1000, 5000))
-#         )
-#         equity_price.save()
-#
-#         logger.debug('SUCCESS__PRICE___')
-#         logger.debug(str(model_to_dict(equity_price)))
-#
-#     except Exception as e:
-#         logger.debug('FAILURE__PRICE___')
-#         logger.debug(str(e))
+
+        for equity in json_response['data']:
+            equity_object = Equity.objects.create(
+                date = equity['last_trade_time'],
+                asset = EquityIndex.objects.get(ticker=equity['symbol']),
+                price = equity['price'],
+                volume = equity['volume'],
+                marketcap = equity['market_cap'],
+                eps = equity['eps'],
+                pe = equity['pe'] if isinstance(equity['pe'], float) else None,
+            )
