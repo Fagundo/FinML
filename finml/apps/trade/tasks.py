@@ -1,4 +1,5 @@
-from apps.trade.models import EquityIndex, Equity
+from apps.trade.models import EquityIndex, Equity, Treasury
+from apps.trade.scrape import treasuries
 from config.celery import celery_app
 
 from django.forms.models import model_to_dict
@@ -46,4 +47,26 @@ def get_equities():
                 marketcap = equity['market_cap'],
                 eps = equity['eps'],
                 pe = equity['pe'] if isinstance(equity['pe'], float) else None,
+            )
+
+@periodic_task(run_every=crontab(minute='*'))
+def get_treasuries():
+    for treasury in treasuries.get():
+        if treasury['type']!='muni':
+            Treasury.objects.create(
+                date = dt.strptime(treasury['time (edt)'], '%m/%d/%Y'),
+                symbol = treasury['symbol'],
+                type = treasury['type'],
+                maturity = treasury['maturity'],
+                coupon = treasury['coupon'],
+                price = treasury['price'],
+                ytm = treasury['yield'],
+            )
+        else:
+            Treasury.objects.create(
+                date = dt.strptime(treasury['time (edt)'], '%m/%d/%Y'),
+                symbol = treasury['symbol'],
+                type = treasury['type'],
+                maturity = treasury['maturity'],
+                ytm = treasury['yield'],
             )

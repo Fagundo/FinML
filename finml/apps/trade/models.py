@@ -32,6 +32,15 @@ class Equity(models.Model):
     eps = models.FloatField(null=True, blank=True)
     pe = models.FloatField(null=True, blank=True)
 
+class Treasury(models.Model):
+    date = models.DateTimeField()
+    symbol = models.CharField(max_length=20, help_text='Treasury Symbol')
+    type = models.CharField(max_length = 5, help_text='Type of treasury')
+    maturity = models.IntegerField()
+    coupon = models.FloatField(null=True, blank=True)
+    price = models.FloatField(null=True, blank=True)
+    ytm =models.FloatField()
+
 # TODO MJF: Make a model for brokerage accounts
 # class Broker(models.Model):
 #     brokerage = models.CharField(max_length=20, help_text='Equity Name')

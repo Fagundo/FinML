@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.trade.models import EquityIndex, Equity
+from apps.trade.models import EquityIndex, Equity, Treasury
 
 
 class EquityIndexSerializer(serializers.HyperlinkedModelSerializer):
@@ -12,3 +12,8 @@ class EquitySerializer(serializers.HyperlinkedModelSerializer):
         model = Equity
         fields = ('url', 'date', 'asset', 'price',
                   'bid', 'ask', 'volume', 'marketcap')
+
+class TreasurySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Treasury
+        fields = ('url', 'date', 'type', 'maturity', 'price', 'ytm')
