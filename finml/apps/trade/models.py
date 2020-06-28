@@ -4,10 +4,10 @@ from django.db import models
 class EquityIndex(models.Model):
     '''Django model of equity assets. Includes generic information about the asset.
        Primarily used as an index for equities to query'''
-    name = models.CharField(max_length=20, help_text='Equity Name')
-    ticker = models.CharField(max_length=4, help_text='Equity Ticker Symbol',
+    name = models.CharField(max_length=40, help_text='Equity Name')
+    ticker = models.CharField(max_length=6, help_text='Equity Ticker Symbol',
                               primary_key=True)
-    industry = models.CharField(max_length=20, help_text='Equity Industry',
+    industry = models.CharField(max_length=40, help_text='Equity Industry',
                                 blank=True, null=True)
     industry_2 = models.CharField(max_length=20, help_text='Equity Industry 2',
                                 blank=True, null=True)
@@ -27,8 +27,8 @@ class Equity(models.Model):
     price = models.FloatField(null=True, blank=True)
     bid = models.FloatField(null=True, blank=True)
     ask = models.FloatField(null=True, blank=True)
-    volume = models.BigIntegerField()
-    marketcap = models.BigIntegerField()
+    volume = models.BigIntegerField(null=True, blank=True)
+    marketcap = models.BigIntegerField(null=True, blank=True)
     eps = models.FloatField(null=True, blank=True)
     pe = models.FloatField(null=True, blank=True)
 
