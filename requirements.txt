@@ -1,5 +1,5 @@
 celery==4.4.2
-Django==3.0.4
+Django==3.0.7
 djangorestframework==3.11.0
 django_celery_beat==2.0.0
 numpy==1.18.2
