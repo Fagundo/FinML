@@ -9,13 +9,9 @@ class EquityIndex(models.Model):
                               primary_key=True)
     industry = models.CharField(max_length=40, help_text='Equity Industry',
                                 blank=True, null=True)
-    industry_2 = models.CharField(max_length=20, help_text='Equity Industry 2',
-                                blank=True, null=True)
-    industry_3 = models.CharField(max_length=20, help_text='Equity Industry 3',
-                                blank=True, null=True)
-    currency =  models.CharField(max_length=3, help_text='Equity Currency',
+    currency =  models.CharField(max_length=6, help_text='Equity Currency',
                                  blank=True, null=True)
-    exchange = models.CharField(max_length=3, help_text='Equity Exchange',
+    exchange = models.CharField(max_length=6, help_text='Equity Exchange',
                                  blank=True, null=True)
     query = models.BooleanField(default=True)
     own = models.BooleanField(default=False)
@@ -24,13 +20,8 @@ class EquityIndex(models.Model):
 class Equity(models.Model):
     date = models.DateTimeField()
     asset = models.ForeignKey(EquityIndex, on_delete=models.CASCADE)
-    price = models.FloatField(null=True, blank=True)
-    bid = models.FloatField(null=True, blank=True)
-    ask = models.FloatField(null=True, blank=True)
-    volume = models.BigIntegerField(null=True, blank=True)
-    marketcap = models.BigIntegerField(null=True, blank=True)
-    eps = models.FloatField(null=True, blank=True)
-    pe = models.FloatField(null=True, blank=True)
+    low = models.FloatField(null=True, blank=True)
+    high = models.FloatField(null=True, blank=True)
 
 # TODO MJF: Make a model for brokerage accounts
 # class Broker(models.Model):
