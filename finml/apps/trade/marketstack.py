@@ -41,7 +41,6 @@ def tickers():
     query = f'tickers{ACCESS_KEY}'
 
     try:
-        print(os.path.join(MARKETSTACK_BASE, query))
         response = requests.get(
             os.path.join(MARKETSTACK_BASE, query)
         )
@@ -51,4 +50,5 @@ def tickers():
         return json_response
 
     except Exception as e:
-        raise
+        print('Unable to query tickers')
+        print(str(e))
