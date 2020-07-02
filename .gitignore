@@ -11,3 +11,6 @@ data/*
 
 # Environment
 .env
+
+# Celery
+*.db

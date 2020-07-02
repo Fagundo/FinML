@@ -9,7 +9,7 @@ TOKEN = os.environ['MARKETSTACK_TOKEN']
 ACCESS_KEY = f'?access_key={TOKEN}'
 
 
-def intraday(stock_list, interval='15min', limit=2, offset=0):
+def intraday(stock_list, interval='15min', limit=1,offset=0):
 
     # Check API query values
     assert interval in ['15min', '30min', '1h', '3h', '6h', '12h'], 'Wrong interval'

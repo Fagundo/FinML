@@ -7,25 +7,31 @@ class EquityIndex(models.Model):
     name = models.CharField(max_length=40, help_text='Equity Name')
     ticker = models.CharField(max_length=6, help_text='Equity Ticker Symbol',
                               primary_key=True)
-    industry = models.CharField(max_length=40, help_text='Equity Industry',
+    sector = models.CharField(max_length=40, help_text='Equity Sector',
                                 blank=True, null=True)
-    currency =  models.CharField(max_length=6, help_text='Equity Currency',
-                                 blank=True, null=True)
-    exchange = models.CharField(max_length=6, help_text='Equity Exchange',
-                                 blank=True, null=True)
+    enabled =  models.BooleanField(default=True)
     query = models.BooleanField(default=True)
     own = models.BooleanField(default=False)
 
 
-class Equity(models.Model):
+class OpenClose(models.Model):
     date = models.DateTimeField()
     asset = models.ForeignKey(EquityIndex, on_delete=models.CASCADE)
+    open = models.FloatField(null=True, blank=True)
+    close = models.FloatField(null=True, blank=True)
     low = models.FloatField(null=True, blank=True)
     high = models.FloatField(null=True, blank=True)
+    volume = models.IntegerField(null=True, blank=True)
 
-# TODO MJF: Make a model for brokerage accounts
-# class Broker(models.Model):
-#     brokerage = models.CharField(max_length=20, help_text='Equity Name')
-#     asset = models.CharField(max_length=20, help_text='Equity Name')
-#     username = models.CharField(max_length=20, help_text='Equity Name')
-#     token = models.CharField(max_length=20, help_text='Equity Name')
+
+class IntraDay(models.Model):
+    date = models.DateTimeField()
+    asset = models.ForeignKey(EquityIndex, on_delete=models.CASCADE)
+    update_date = models.DateTimeField()
+    price = models.FloatField(null=True, blank=True)
+    peratio = models.FloatField(null=True, blank=True)
+    bid = models.FloatField(null=True, blank=True)
+    ask = models.FloatField(null=True, blank=True)
+    volume = models.IntegerField(null=True, blank=True)
+    source = models.CharField(max_length=25, help_text='Quote Source',
+                              blank=True, null=True)
