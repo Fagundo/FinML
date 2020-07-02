@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from apps.trade.views import EquityIndexViewSet, EquityViewSet
+from apps.trade.views import EquityIndexViewSet, OpenCloseViewSet, IntraDayViewSet
 
 router = routers.DefaultRouter()
-router.register(r'equity_index', EquityIndexViewSet)
-router.register(r'equity', EquityViewSet)
+router.register(r'equityindex', EquityIndexViewSet)
+router.register(r'openclose', OpenCloseViewSet)
+router.register(r'intraday', IntraDayViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

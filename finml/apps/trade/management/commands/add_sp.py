@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from django.core.management.base import BaseCommand, CommandError
 
-from apps.trade import marketstack
+from apps.trade import iex
 from apps.trade.models import EquityIndex
 
 
@@ -18,27 +18,24 @@ class Command(BaseCommand):
         parser.add_argument('-s', '--stocks', default=SP_DIR)
 
     def handle(self, *args, **options):
-        tickers = marketstack.tickers()
+        tickers = iex.tickers()
 
         # Get S&P stock codes for WTD
         sp = pd.read_csv(options['stocks'])
-        sp_symbols = sp['Symbol'].tolist()
+        enabled_tickers = [x['symbol'] for x in tickers if x['isEnabled']]
 
-        sp_data = list(
-            filter(lambda x: x['symbol'] in sp_symbols, tickers['data'])
-        )
+        sp = sp[sp['Symbol'].isin(enabled_tickers)]
 
-
-        for stock in sp_data:
+        for _, stock in sp.iterrows():
 
             try:
                 EquityIndex.objects.get_or_create(
-                    name=stock['name'],
-                    ticker=stock['symbol'],
-                    currency=stock['stock_exchange']['currency']['code'],
-                    exchange=stock['stock_exchange']['acronym'],
+                    name=stock['Name'],
+                    ticker=stock['Symbol'],
+                    sector=stock['Sector'],
+                    enabled=True,
                 )
-
+                
             except Exception as e:
                 name = stock['name']
                 print(f'Failed to create asset {name}')
