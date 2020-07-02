@@ -8,8 +8,8 @@ RUN apt-get update && \
     libpq-dev \
     python3-pip
 
-COPY ./FinML /FinML
+COPY ./finml /finml
 COPY ./requirements.txt /requirements.txt
 RUN pip3 install -r requirements.txt
 
-WORKDIR /FinML
+WORKDIR /finml

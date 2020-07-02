@@ -1,11 +1,11 @@
-version: "3.7"
+version: "3.3"
 
 services:
   finml:
     image: finml
     build: .
     volumes:
-      - ./FinML:/FinML
+      - ./finml:/finml
     env_file: .env
     ports:
       - 8000:8000
@@ -16,7 +16,7 @@ services:
   celery:
     image: finml
     volumes:
-      - ./FinML:/FinML
+      - ./finml:/finml
     depends_on:
       - finml
       - redis
@@ -26,7 +26,7 @@ services:
   celery_beat:
     image: finml
     volumes:
-      - ./FinML:/FinML
+      - ./finml:/finml
     depends_on:
       - finml
       - redis
