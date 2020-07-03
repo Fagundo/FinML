@@ -5,7 +5,6 @@ pipeline {
     DATE = new Date().format("yyyy-MM-dd")
     REG = "http://localhost:5000/"
     BUILD_NUMBERS_TAG = "${DATE}-${BUILD_NUMBER}"
-    BUILD_TAGS = "${BUILD_NUMBERS_TAG},${BRANCH_NAME.replaceAll('/','-')}"
 
     FINML = "finml/finml"
   }
@@ -14,7 +13,8 @@ pipeline {
     stage('finml') {
       steps {
         script {
-          buildAndPush(FINML, ".", REG, BUILD_TAGS)
+          echo $BUILD_NUMBER_TAG
+          buildAndPush(FINML, ".", REG, BUILD_NUMBERS_TAG)
         }
       }
     }
