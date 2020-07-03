@@ -13,7 +13,6 @@ pipeline {
     stage('finml') {
       steps {
         script {
-          echo $BUILD_NUMBER_TAG
           buildAndPush(FINML, ".", REG, BUILD_NUMBERS_TAG)
         }
       }
