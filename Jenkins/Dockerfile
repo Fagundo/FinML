@@ -1,4 +1,4 @@
-from jenkinsci/jenkins:lts
+from jenkinsci/jenkins
 
 USER root
 RUN apt-get update \
