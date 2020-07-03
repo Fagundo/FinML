@@ -37,6 +37,6 @@ class Command(BaseCommand):
                 )
                 
             except Exception as e:
-                name = stock['name']
+                name = stock['Name']
                 print(f'Failed to create asset {name}')
                 print(e)
