@@ -14,7 +14,7 @@ pipeline {
     stage('finml') {
       steps {
         script {
-          buildAndPush(FINML, "../", REG, BUILD_TAGS)
+          buildAndPush(FINML, ".", REG, BUILD_TAGS)
         }
       }
     }
