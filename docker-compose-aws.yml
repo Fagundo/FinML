@@ -33,7 +33,7 @@ services:
     command: python3 -m config.celery beat --loglevel=debug
 
   jupyterhub:
-    build: localhost:5000/finml/jupyterhub:latest
+    image: localhost:5000/finml/jupyterhub:latest
     container_name: jupyterhub_hub
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -41,23 +41,21 @@ services:
     env_file: .env
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:jupyter.example.com"
+      - "traefik.http.routers.jupyterhub.rule=PathPrefix(`/`)"
 
   reverse-proxy:
-    image: traefik
+    image: traefik:2.1.9
     ports:
       - "80:80"
-      - "443:443"
-      - "8080:8080"
     volumes:
-      - ./JupyterHub/reverse-proxy/traefik.toml:/etc/traefik/traefik.toml
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/certs:/etc/certs
+    command: --providers.docker=true --api.insecure=true
 
   jupyterlab:
-    build: localhost:5000/finml/jupyterlab:latest
-    image: jupyterlab_img
+    image: localhost:5000/finml/jupyterlab:latest
     container_name: jupyterlab
+    command: echo
 
   redis:
     image: redis:alpine
