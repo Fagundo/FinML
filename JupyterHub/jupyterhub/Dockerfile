@@ -2,7 +2,7 @@
 FROM jupyterhub/jupyterhub:0.9.3
 
 # Copy the JupyterHub configuration in the container
-COPY jupyterhub_config.py .
+COPY jupyterhub_config.py /srv/
 
 # Download script to automatically stop idle single-user servers
 RUN wget https://raw.githubusercontent.com/jupyterhub/jupyterhub/0.9.3/examples/cull-idle/cull_idle_servers.py
@@ -12,3 +12,5 @@ RUN pip install \
     dockerspawner==0.11.1 \
     jupyterhub-nativeauthenticator==0.0.5 \
     jupyterhub-dummyauthenticator==0.3.1
+
+CMD ["jupyterhub", "-f", "/srv/jupyterhub_config.py"]
