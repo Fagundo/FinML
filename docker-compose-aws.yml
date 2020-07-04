@@ -61,14 +61,10 @@ services:
   redis:
     image: redis:alpine
     container_name: redis
-    ports:
-      - 6379:6379
 
   postgres:
     image: postgres:11
     env_file: .env
-    ports:
-        - 5432:5432
     volumes:
       - database:/var/lib/postgresql/data
 

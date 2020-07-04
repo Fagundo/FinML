@@ -3,6 +3,7 @@
 import os
 from dockerspawner import SwarmSpawner
 
+
 ## Generic
 c.Spawner.default_url = '/lab'
 
@@ -11,14 +12,13 @@ c.JupyterHub.authenticator_class = 'nativeauthenticator.NativeAuthenticator'
 
 # Set admin user
 c.JupyterHub.admin_access = True
-c.Authenticator.admin_users = {'fagundo'}
-c.NativeAuthenticator.open_signup = True
+c.Authenticator.admin_users = {'admin'}
 
 ## Docker spawner
 c.JupyterHub.spawner_class = 'dockerspawner.DockerSpawner'
 c.DockerSpawner.image = os.environ['DOCKER_JUPYTER_CONTAINER']
 c.DockerSpawner.network_name = os.environ['DOCKER_NETWORK_NAME']
-
+c.DockerSpawner.debug = True
 c.JupyterHub.hub_ip = os.environ['HUB_IP']
 
 # user data persistence
