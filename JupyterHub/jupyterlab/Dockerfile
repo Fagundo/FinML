@@ -6,4 +6,4 @@ USER root
 
 # Python Packages
 COPY requirements.txt .
-RUN conda install --yes --file requirements.txt
+RUN pip install -r requirements.txt
