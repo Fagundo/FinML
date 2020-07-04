@@ -38,7 +38,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - jupyterhub_data:/srv/jupyterhub
-      - ./JupyterHub/jupyterhub/jupyterhub_config.py:/srv/jupyterhub_config.py
+      - ./JupyterHub/jupyterhub/jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py
     env_file: .env
     labels:
       - "traefik.enable=true"
