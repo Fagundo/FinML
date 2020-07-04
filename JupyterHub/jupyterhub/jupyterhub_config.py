@@ -10,8 +10,9 @@ c.Spawner.default_url = '/lab'
 c.JupyterHub.authenticator_class = 'nativeauthenticator.NativeAuthenticator'
 
 # Set admin user
+c.JupyterHub.admin_access = True
 c.Authenticator.admin_users = {'fagundo'}
-c.DummyAuthenticator.password = 'password'
+c.NativeAuthenticator.open_signup = True
 
 ## Docker spawner
 c.JupyterHub.spawner_class = 'dockerspawner.DockerSpawner'
@@ -19,7 +20,6 @@ c.DockerSpawner.image = os.environ['DOCKER_JUPYTER_CONTAINER']
 c.DockerSpawner.network_name = os.environ['DOCKER_NETWORK_NAME']
 
 c.JupyterHub.hub_ip = os.environ['HUB_IP']
-c.JupyterHub.port = 80
 
 # user data persistence
 # see https://github.com/jupyterhub/dockerspawner#data-persistence-and-dockerspawner
