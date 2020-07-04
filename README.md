@@ -6,7 +6,7 @@ Starting a repository to get the proverbial ball rolling, juices flowing.
 FinML hosts a number of services that aggregate into a financial analytics tool. In its current form, users can apply machine learning to near real-time (updated every minute) stock data via a Jupyter Hub. Django queries data with ansynchronous Celery tasks and stores the stock quotes in a Postgres container. We host all of this in an AWS EC2 instance that provides a CI/CD pipeline via Jenkins.
 
 ## End Goal
-A Machine Learning Operations pipeline that updates and deploys models based on real time data. We aim to a pipeline that makes price predicitons for a reinforcement learning trading agent.
+A Machine Learning Operations pipeline that updates and deploys models based on real time data. We aim to generate price predicitons for a reinforcement learning trading agent to autonomously trade on.
 
 ## How To
 You will need to copy `.env-sample` to `.env` in your local environment.
