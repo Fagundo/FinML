@@ -22,6 +22,16 @@ services:
     env_file: .env
     command: python3 -m config.celery worker --loglevel debug
 
+  celery1:
+    image: localhost:5000/finml/finml:latest
+    volumes:
+      - ./finml:/finml
+    depends_on:
+      - finml
+      - redis
+    env_file: .env
+    command: python3 -m config.celery worker --loglevel debug
+
   celery_beat:
     image: localhost:5000/finml/finml:latest
     volumes:

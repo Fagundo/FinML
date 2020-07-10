@@ -11,6 +11,8 @@ import os
 import time
 import requests
 from datetime import datetime as dt
+
+from django.utils import timezone
 from django.utils.timezone import make_aware
 
 
@@ -32,8 +34,8 @@ def convert_timestamp(timestamp):
 
 
 @shared_task
-def run_batch(function, batch):
-    _ = list(map(function, batch))
+def run_batch(*args):
+    _ = list(map(get_intraday, args))
 
 
 def get_intraday(ticker):
@@ -43,7 +45,7 @@ def get_intraday(ticker):
     try:
         equity_object = IntraDay.objects.create(
             asset = EquityIndex.objects.get(ticker=json_response['symbol']),
-            date=make_aware(dt.now()),
+            date=timezone.now(),
             update_date = convert_timestamp(json_response['latestUpdate']),
             price = json_response['latestPrice'],
             peratio = json_response['peRatio'],
@@ -59,18 +61,26 @@ def get_intraday(ticker):
 
 @periodic_task(run_every=crontab(minute='30', hour='13',day_of_week='mon-fri'))
 def query_intraday():
+    start = timezone.now()
 
-    while dt.now().hour < 18:
-        equities = EquityIndex.objects.filter(query=True)
-        equities = [eq.ticker for eq in EquityIndex.objects.filter(query=True)]
+    while start.hour!=19 and start.minute<58:
+        time_diff = timezone.now() - start
 
-        for batch in batches(equities, 20):
-            run_batch(get_intraday, batch)
+        if time_diff.seconds>=60:
+            start = timezone.now()
 
-        time.sleep(60) # Sleep 1 minute
+            equities = EquityIndex.objects.filter(query=True)
+            equities = [eq.ticker for eq in EquityIndex.objects.filter(query=True)]
+
+            for batch in batches(equities, 50):
+                run_batch.apply_async(batch)
+
+        else:
+            time.sleep(int(60 - time_diff.seconds))
 
 
-@periodic_task(run_every=crontab(minute='30', hour='18', day_of_week='mon-fri'))
+
+@periodic_task(run_every=crontab(hour='20', day_of_week='mon-fri'))
 def query_open_close():
 
     equities = EquityIndex.objects.filter(query=True)
@@ -83,7 +93,7 @@ def query_open_close():
         else:
             try:
                 openclose = OpenClose.objects.create(
-                    date = make_aware(dt.now()),
+                    date = timezone.now(),
                     asset = EquityIndex.objects.get(ticker=k),
                     open = v['open']['price'],
                     close = v['close']['price'],
@@ -91,8 +101,6 @@ def query_open_close():
                     high = v['high'],
                     volume = v['volume']
                 )
-
-                equities.remove(k)
 
             except Exception as e:
                 print(str(e))
