@@ -1,4 +1,4 @@
-'''Scripts to query MarketStack'''
+# Functions to query IEX cloud
 import os
 import requests
 
