@@ -3,62 +3,42 @@ version: "3.3"
 services:
   finml:
     image: finml
-    build: .
+    build: ./finml
     volumes:
-      - ./finml:/finml
-    env_file: .env
+      - ./finml/src:/finml
+    env_file: .env-sample
     ports:
       - 8000:8000
     depends_on:
       - postgres
-    command: sh ./scripts/run.sh
+    command: sh /home/run.sh
 
   celery:
     image: finml
     volumes:
-      - ./finml:/finml
+      - ./finml/src:/finml
     depends_on:
       - finml
       - redis
-    env_file: .env
+    env_file: .env-sample
     command: python3 -m config.celery worker --loglevel debug
 
   celery_beat:
     image: finml
     volumes:
-      - ./finml:/finml
+      - ./finml/src:/finml
     depends_on:
       - finml
       - redis
-    env_file: .env
+    env_file: .env-sample
     command: python3 -m config.celery beat --loglevel=debug
-
-  jupyterhub:
-    image: jupyterhub
-    build: ./JupyterHub/jupyterhub
-    container_name: jupyterhub_hub
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - jupyterhub_data:/srv/jupyterhub
-    env_file: .env
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.jupyterhub.rule=PathPrefix(`/`)"
-
-  reverse-proxy:
-    image: traefik:2.1.9
-    ports:
-      - "80:80"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /etc/certs:/etc/certs
-    command: --providers.docker=true --api.insecure=true
 
   jupyterlab:
     image: jupyterlab
     build: ./JupyterHub/jupyterlab
     container_name: jupyterlab
-    command: echo
+    ports:
+      - 8888:8888
 
   redis:
     image: redis:alpine
