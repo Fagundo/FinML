@@ -3,46 +3,38 @@ pipeline {
 
   environment {
     DATE = new Date().format("yyyy-MM-dd")
-    REG = "http://localhost:5000/"
-    BUILD_NUMBERS_TAG = "${DATE}-${BUILD_NUMBER}"
-
-    FINML = "finml/finml"
-    JUPYTERHUB = "finml/jupyterhub"
-    JUPYTERLAB = "finml/jupyterlab"
+    REGISTRY = "http://localhost:5000/"
   }
 
   stages {
     stage('finml') {
       steps {
         script {
-          buildAndPush(FINML, ".", REG, BUILD_NUMBERS_TAG)
+          publishImaged("finml/finml", "./finml", REGISTRY, DATE)
         }
       }
     }
     stage('jupyterhub') {
       steps {
         script {
-          buildAndPush(JUPYTERHUB, "./JupyterHub/jupyterhub", REG, BUILD_NUMBERS_TAG)
+          publishImage(finml/jupyterhub, "./JupyterHub/jupyterhub", REGISTRY, DATE)
         }
       }
     }
     stage('jupyterlab') {
       steps {
         script {
-          buildAndPush(JUPYTERLAB, "./JupyterHub/jupyterlab", REG, BUILD_NUMBERS_TAG)
+          publishImage(finml/jupyterlab, "./JupyterHub/jupyterlab", REGISTRY, DATE)
         }
       }
     }
   }
 }
 
-def buildAndPush(String repo, String target, String registry, String tags) {
-  image = docker.build(repo, target)
+def publishImage(String image, String target, String registry, String tag) {
+  dockerImage = docker.build(image, target)
   docker.withRegistry(registry) {
-    image.push("latest")
-
-    tags.split(',').each { tag ->
-      image.push(tag)
-    }
+    dockerImage.push("latest")
+    dockerImage.push(tag)
   }
 }

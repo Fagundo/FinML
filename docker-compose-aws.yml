@@ -4,18 +4,18 @@ services:
   finml:
     image: localhost:5000/finml/finml:latest
     volumes:
-      - ./finml:/finml
+      - ./finml/src:/finml
     env_file: .env
     ports:
       - 8000:8000
     depends_on:
       - postgres
-    command: sh ./scripts/run.sh
+    command: sh /home/run.sh
 
   celery:
     image: localhost:5000/finml/finml:latest
     volumes:
-      - ./finml:/finml
+      - ./finml/src:/finml
     depends_on:
       - finml
       - redis
@@ -23,9 +23,9 @@ services:
     command: python3 -m config.celery worker --loglevel debug
 
   celery1:
-    image: localhost:5000/finml/finml:latest
+    image: localhost:5000/finml-finml:latest
     volumes:
-      - ./finml:/finml
+      - ./finml/src:/finml
     depends_on:
       - finml
       - redis
@@ -35,7 +35,7 @@ services:
   celery_beat:
     image: localhost:5000/finml/finml:latest
     volumes:
-      - ./finml:/finml
+      - ./finml/src:/finml
     depends_on:
       - finml
       - redis
