@@ -10,21 +10,21 @@ pipeline {
     stage('finml') {
       steps {
         script {
-          publishImaged("finml/finml", "./finml", REGISTRY, DATE)
+          publishImage("finml/finml", "./finml", REGISTRY, DATE)
         }
       }
     }
     stage('jupyterhub') {
       steps {
         script {
-          publishImage(finml/jupyterhub, "./JupyterHub/jupyterhub", REGISTRY, DATE)
+          publishImage("finml/jupyterhub", "./JupyterHub/jupyterhub", REGISTRY, DATE)
         }
       }
     }
     stage('jupyterlab') {
       steps {
         script {
-          publishImage(finml/jupyterlab, "./JupyterHub/jupyterlab", REGISTRY, DATE)
+          publishImage("finml/jupyterlab", "./JupyterHub/jupyterlab", REGISTRY, DATE)
         }
       }
     }
