@@ -23,7 +23,7 @@ services:
     command: python3 -m config.celery worker --loglevel debug
 
   celery1:
-    image: localhost:5000/finml-finml:latest
+    image: localhost:5000/finml/finml:latest
     volumes:
       - ./finml/src:/finml
     depends_on:
@@ -77,7 +77,7 @@ services:
     env_file: .env
     volumes:
       - database:/var/lib/postgresql/data
-
+    
 volumes:
   database:
   jupyterhub_data:
